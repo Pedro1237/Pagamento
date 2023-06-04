@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+  <title>Cálculo de Pagamento</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 5px;
+      padding: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+    tr:hover {
+      background-color: #f2f2f2;
+    }
+  </style>
+  <script>
+    function adicionarNaTabela() {
+      var nome = document.getElementById("nome").value;
+      var funcao = document.getElementById("funcao").value;
+      var diasTrabalhados = parseFloat(document.getElementById("diasTrabalhados").value.replace(",", "."));
+      var lugar = document.getElementById("lugar").value;
+      var desconto = parseFloat(document.getElementById("desconto").value);
+
+      var valor = calcularValor(funcao, diasTrabalhados);
+      var valorComDesconto = aplicarDesconto(valor, desconto);
+
+      var tabela = document.getElementById("tabela");
+      var newRow = tabela.insertRow();
+
+      var cellNome = newRow.insertCell(0);
+      cellNome.innerHTML = nome;
+
+      var cellFuncao = newRow.insertCell(1);
+      cellFuncao.innerHTML = funcao;
+
+      var cellDias = newRow.insertCell(2);
+      cellDias.innerHTML = diasTrabalhados.toFixed(1);
+
+      var cellLugar = newRow.insertCell(3);
+      cellLugar.innerHTML = lugar;
+
+      var cellValor = newRow.insertCell(4);
+      cellValor.innerHTML = valorComDesconto;
+
+      limparCampos();
+    }
+
+    function calcularValor(funcao, diasTrabalhados) {
+      var valorPedreiro = 150;
+      var valorServente = 50;
+
+      if (funcao === "pedreiro") {
+        if (diasTrabalhados < 1) {
+          return valorPedreiro / 2;
+        } else {
+          return valorPedreiro * diasTrabalhados;
+        }
+      } else if (funcao === "servente") {
+        return valorServente * diasTrabalhados;
+      }
+
+      return 0;
+    }
+
+    function aplicarDesconto(valor, desconto) {
+      return valor - desconto;
+    }
+
+    function limparCampos() {
+      document.getElementById("nome").value = "";
+      document.getElementById("funcao").value = "";
+      document.getElementById("diasTrabalhados").value = "";
+      document.getElementById("lugar").value = "";
+      document.getElementById("desconto").value = "";
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Cálculo de Pagamento</h1>
+
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome">
+
+    <label for="funcao">Função:</label>
+    <select id="funcao">
+      <option value="">Selecione</option>
+      <option value="pedreiro">Pedreiro</option>
+      <option value="servente">Servente</option>
+    </select>
+
+    <label for="diasTrabalhados">Dias Trabalhados:</label>
+    <input type="text" id="diasTrabalhados">
+  
+    <label for="lugar">Lugar:</label>
+    <input type="text" id="lugar">
+
+    <label for="desconto">Desconto:</label>
+    <input type="text" id="desconto">
+
+    <button onclick="adicionarNaTabela()">Adicionar</button>
+
+    <table id="tabela">
+      <tr>
+        <th>Nome</th>
+        <th>Função</th>
+        <th>Dias Trabalhados</th>
+        <th>Lugar</th>
+        <th>Valor</th>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
